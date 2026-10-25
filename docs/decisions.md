@@ -18,6 +18,7 @@ Les décisions déjà prises. On ne les rediscute pas sans raison nouvelle ; une
 | 2026-10-25 | Nom provisoire : Cotyrie (coterie + Tyrie). | Un dépôt se renomme à tout moment ; le nom ne bloque pas la suite. |
 | 2026-10-25 | L'outil sert à n'importe quel moment, pas seulement le soir : « ce soir » devient « maintenant » dans la vision et les specs. | Demande de Thibault. |
 | 2026-10-25 | Code, noms de fichiers, commentaires, commits et titres de PR en anglais ; interface, specs et échanges avec Thibault en français. | Demande de Thibault. |
+| 2026-10-25 | Technique : TypeScript, Vite et Vitest ; tests lancés par GitHub Actions sur chaque PR ; page publiée sur GitHub Pages. | Langage web le plus répandu, gratuit, sans serveur. Validé par Thibault. |
 
 ## Questions encore ouvertes
 
@@ -25,4 +26,3 @@ Les décisions déjà prises. On ne les rediscute pas sans raison nouvelle ; une
 - Licence du code (le code sera public).
 - Licence du wiki officiel : ce qu'on peut recopier et comment le citer.
 - Ce qu'ArenaNet autorise pour un site financé par dons et options cosmétiques.
-- Choix technique précis de la page statique de la V0.

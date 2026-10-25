@@ -32,6 +32,13 @@ Le porteur du projet, Thibault, valide les specs et les résultats. **Il ne reli
   - **En anglais** : le code, les noms de fichiers et de dossiers, les noms de variables, les commentaires, les messages de commit, les noms de branches et les titres de PR.
   - **En français** : l'interface (UI), les specs et leurs scénarios, les échanges avec Thibault, y compris le résumé de chaque PR.
 
+## Commandes
+
+- `npm ci` : installer les dépendances.
+- `npm run dev` : lancer la page en local.
+- `npm run typecheck`, `npm test`, `npm run build` : les vérifications que la CI lance sur chaque PR. Elles doivent toutes passer avant de pousser.
+- La page est publiée sur GitHub Pages à chaque fusion sur `main`.
+
 ## Repères sur l'API GW2
 
 - Base : `https://api.guildwars2.com/v2`, clé passée en `access_token` (compatible CORS depuis le navigateur).
