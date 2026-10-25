@@ -54,7 +54,9 @@ export class Gw2Client {
     } catch {
       throw new ApiUnavailableError();
     }
-    if (response.status === 401 || (response.status === 403 && options.token !== undefined)) {
+    // The API answers an unknown or revoked key with 400 "invalid key"
+    // (401 or 403 on some endpoints); the other parameters are fixed in code.
+    if (options.token !== undefined && [400, 401, 403].includes(response.status)) {
       throw new InvalidKeyError();
     }
     // Asking only for ids that no longer exist answers 404: nothing to read.
