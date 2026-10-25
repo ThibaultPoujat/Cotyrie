@@ -28,7 +28,9 @@ Le porteur du projet, Thibault, valide les specs et les résultats. **Il ne reli
 - **Le minimum de données** : on ne lit et ne garde que ce qui sert aux suggestions (esprit du RGPD).
 - **Les clés API ne sont envoyées qu'à l'API officielle** (`https://api.guildwars2.com`), jamais ailleurs, et ne sont jamais journalisées.
 - **Tout texte affiché est en français**, regroupé dans des fichiers de traduction pour ajouter d'autres langues plus tard. Les noms du jeu viennent de l'API avec `lang=fr`.
-- Le code, les noms de variables et les messages de commit suivent les conventions habituelles (anglais accepté pour le code) ; la documentation destinée à Thibault est en français.
+- **Langues** :
+  - **En anglais** : le code, les noms de fichiers et de dossiers, les noms de variables, les commentaires, les messages de commit, les noms de branches et les titres de PR.
+  - **En français** : l'interface (UI), les specs et leurs scénarios, les échanges avec Thibault, y compris le résumé de chaque PR.
 
 ## Repères sur l'API GW2
 

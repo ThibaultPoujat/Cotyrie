@@ -17,6 +17,7 @@ Les décisions déjà prises. On ne les rediscute pas sans raison nouvelle ; une
 | 2026-10-22 | Specs de la V0 validées. | Voir [specs/v0.md](specs/v0.md). |
 | 2026-10-25 | Nom provisoire : Cotyrie (coterie + Tyrie). | Un dépôt se renomme à tout moment ; le nom ne bloque pas la suite. |
 | 2026-10-25 | L'outil sert à n'importe quel moment, pas seulement le soir : « ce soir » devient « maintenant » dans la vision et les specs. | Demande de Thibault. |
+| 2026-10-25 | Code, noms de fichiers, commentaires, commits et titres de PR en anglais ; interface, specs et échanges avec Thibault en français. | Demande de Thibault. |
 
 ## Questions encore ouvertes
 
