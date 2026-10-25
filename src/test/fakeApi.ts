@@ -86,7 +86,8 @@ export function createFakeApi(options: FakeApiOptions): { fetch: FetchFn; calls:
     }
 
     const account = options.accounts[url.searchParams.get("access_token") ?? ""];
-    if (!account) return json({ text: "Invalid access token" }, 401);
+    // Same answer as the real API for an unknown key.
+    if (!account) return json({ text: "invalid key" }, 400);
     switch (path) {
       case "tokeninfo":
         return json({ id: "fictional", name: "fictional", permissions: account.permissions ?? ["account", "progression"] });
