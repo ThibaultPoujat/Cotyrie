@@ -94,6 +94,25 @@ describe("S9", () => {
   });
 });
 
+describe("S1", () => {
+  it("S1: an expansion's achievements, found from the API's achievement groups, are not suggested when a present player lacks it", async () => {
+    const { app, root } = setup({
+      accounts: { [ALICE_KEY]: { access: ["GuildWars2", "PathOfFire"] }, [BRUNO_KEY]: { access: ["GuildWars2"] } },
+    });
+    app.addPlayer("Alice", ALICE_KEY);
+    app.addPlayer("Bruno", BRUNO_KEY);
+    await app.run();
+    expect(suggestionKeys(root, ".all")).not.toContain("achievement:103");
+
+    // Bruno leaves: untick him.
+    const brunoBox = root.querySelectorAll<HTMLInputElement>("ul.players input[type=checkbox]")[1]!;
+    brunoBox.checked = false;
+    brunoBox.dispatchEvent(new Event("change"));
+    await app.run();
+    expect(suggestionKeys(root, ".all")).toContain("achievement:103");
+  });
+});
+
 describe("S10", () => {
   it("S10: every name and text shown is in French: texts come from the French file and game names from the API in French", async () => {
     // Pseudo-locale: every text of the French file gets a marker. Any shown

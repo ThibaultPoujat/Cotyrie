@@ -1,6 +1,7 @@
 // A fake official API serving fictional content, to test the page end to end
 // without the network.
 import type { FetchFn } from "../api/client";
+import { ACHIEVEMENT_GROUPS } from "../gameData/achievementAccess";
 
 export function fakeKey(digit: number): string {
   const d = String(digit);
@@ -23,14 +24,22 @@ export interface FakeApiOptions {
 }
 
 export const FAKE_CONTENT = {
+  groups: [
+    { id: "FICTIONAL-CORE-GROUP", categories: [1, 2] },
+    { id: ACHIEVEMENT_GROUPS.pathOfFire, categories: [3] },
+    { id: ACHIEVEMENT_GROUPS.historical, categories: [4] },
+  ],
   categories: [
-    { id: 1, name: "Catégorie fictive", achievements: [{ id: 101 }, { id: 102 }, { id: 103, required_access: { product: "PathOfFire", condition: "HasAccess" } }] },
-    { id: 2, name: "Autre catégorie fictive", achievements: [{ id: 104 }] },
+    { id: 1, name: "Catégorie fictive", achievements: [101, 102] },
+    { id: 2, name: "Autre catégorie fictive", achievements: [104] },
+    { id: 3, name: "Catégorie fictive du désert", achievements: [103] },
+    { id: 4, name: "Catégorie fictive passée", achievements: [105] },
   ],
   achievements: [
     { id: 101, name: "Collectionneur fictif", locked_text: "", flags: [], tiers: [{ count: 3, points: 5 }], rewards: [{ type: "Title", id: 900 }] },
     { id: 102, name: "Chasseur fictif", locked_text: "", flags: [], tiers: [{ count: 10, points: 10 }] },
     { id: 103, name: "Voyageur du désert fictif", locked_text: "", flags: [], tiers: [{ count: 1, points: 1 }] },
+    { id: 105, name: "Souvenir fictif", locked_text: "", flags: [], tiers: [{ count: 1, points: 1 }] },
     {
       id: 104,
       name: "Héritier fictif",
@@ -60,6 +69,8 @@ export function createFakeApi(options: FakeApiOptions): { fetch: FetchFn; calls:
     const byIds = <T extends { id: number }>(list: T[]) => list.filter((item) => ids?.includes(String(item.id)));
 
     switch (path) {
+      case "achievements/groups":
+        return json(FAKE_CONTENT.groups);
       case "achievements/categories":
         return json(FAKE_CONTENT.categories);
       case "achievements":

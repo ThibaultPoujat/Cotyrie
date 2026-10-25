@@ -8,15 +8,17 @@ import type {
   Reward,
   WizardsVaultObjective,
 } from "../engine/types";
+import {
+  ACHIEVEMENT_CATEGORY_ACCESS,
+  ACHIEVEMENT_GROUP_ACCESS,
+  EXCLUDED_ACHIEVEMENT_GROUPS,
+} from "../gameData/achievementAccess";
 import { RAID_WING_ACCESS } from "../gameData/raids";
 import { WORLD_BOSS_SCHEDULE_UTC } from "../gameData/worldBosses";
 import type { GameNames } from "../i18n/fr";
 import { InvalidKeyError, MissingPermissionsError, type Gw2Client } from "./client";
 
 export const REQUIRED_PERMISSIONS = ["account", "progression"] as const;
-
-// Schema version where category achievements carry their required access.
-const CATEGORY_SCHEMA = "2022-03-23T19:00:00.000Z";
 
 interface ApiTokenInfo {
   permissions?: string[];
@@ -34,9 +36,13 @@ interface ApiAccountAchievement {
 interface ApiVault {
   objectives?: { id: number; title: string; acclaim: number; progress_current: number; progress_complete: number; claimed: boolean }[];
 }
+interface ApiGroup {
+  id: string;
+  categories?: number[];
+}
 interface ApiCategory {
   id: number;
-  achievements?: { id: number; required_access?: { product: string; condition: string } }[];
+  achievements?: number[];
 }
 interface ApiAchievement {
   id: number;
@@ -116,23 +122,29 @@ function toProgress(a: ApiAccountAchievement): AchievementProgress {
 }
 
 export async function loadCatalog(client: Gw2Client, names: GameNames): Promise<Catalog> {
-  const [categories, dungeons, raids, worldBossIds] = await Promise.all([
-    client.get<ApiCategory[]>("achievements/categories", { params: { ids: "all", v: CATEGORY_SCHEMA } }),
+  const [groups, categories, dungeons, raids, worldBossIds] = await Promise.all([
+    client.get<ApiGroup[]>("achievements/groups", { params: { ids: "all" } }),
+    client.get<ApiCategory[]>("achievements/categories", { params: { ids: "all" } }),
     client.get<ApiDungeon[]>("dungeons", { params: { ids: "all" } }),
     client.get<ApiRaid[]>("raids", { params: { ids: "all" } }),
     client.get<string[]>("worldbosses"),
   ]);
 
-  // Only achievements listed in a category are current; the category also
-  // tells which expansion they need.
+  // Only achievements listed in a category of a current group can still be
+  // earned; the group, or the category, tells which expansion they need.
+  const categoryAccess = new Map<number, string[]>();
+  for (const group of groups) {
+    if (EXCLUDED_ACHIEVEMENT_GROUPS.includes(group.id)) continue;
+    for (const categoryId of group.categories ?? []) {
+      const access = ACHIEVEMENT_CATEGORY_ACCESS[categoryId] ?? ACHIEVEMENT_GROUP_ACCESS[group.id];
+      categoryAccess.set(categoryId, access ? [access] : []);
+    }
+  }
   const placement = new Map<number, { categoryId: number; requiredAccess: string[] }>();
   for (const category of categories) {
-    for (const entry of category.achievements ?? []) {
-      const access = entry.required_access;
-      // Content reserved to accounts without a product is skipped.
-      if (access && access.condition !== "HasAccess") continue;
-      placement.set(entry.id, { categoryId: category.id, requiredAccess: access ? [access.product] : [] });
-    }
+    const requiredAccess = categoryAccess.get(category.id);
+    if (!requiredAccess) continue;
+    for (const id of category.achievements ?? []) placement.set(id, { categoryId: category.id, requiredAccess });
   }
 
   const apiAchievements = await client.getMany<ApiAchievement>("achievements", [...placement.keys()]);
