@@ -1,11 +1,10 @@
-import { fr } from "./i18n/fr";
+import { Gw2Client } from "./api/client";
+import { fr, frGameNames } from "./i18n/fr";
+import { browserStorage } from "./storage/store";
+import { App } from "./ui/app";
 
-const app = document.querySelector<HTMLElement>("#app");
+const root = document.querySelector<HTMLElement>("#app");
 
-if (app) {
-  const title = document.createElement("h1");
-  title.textContent = fr.appTitle;
-  const status = document.createElement("p");
-  status.textContent = fr.underConstruction;
-  app.replaceChildren(title, status);
+if (root) {
+  new App(root, { client: new Gw2Client(), storage: browserStorage(), texts: fr, names: frGameNames });
 }

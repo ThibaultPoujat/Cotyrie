@@ -19,6 +19,11 @@ Les décisions déjà prises. On ne les rediscute pas sans raison nouvelle ; une
 | 2026-10-25 | L'outil sert à n'importe quel moment, pas seulement le soir : « ce soir » devient « maintenant » dans la vision et les specs. | Demande de Thibault. |
 | 2026-10-25 | Code, noms de fichiers, commentaires, commits et titres de PR en anglais ; interface, specs et échanges avec Thibault en français. | Demande de Thibault. |
 | 2026-10-25 | Technique : TypeScript, Vite et Vitest ; tests lancés par GitHub Actions sur chaque PR ; page publiée sur GitHub Pages. | Langage web le plus répandu, gratuit, sans serveur. Validé par Thibault. |
+| 2026-10-25 | Toute la V0 (S1 à S12, E1 à E6) dans une seule PR. | Demande de Thibault. |
+| 2026-10-25 | Interprétations de la spec V0 pour le code : l'effort d'une activité est le plus grand nombre d'étapes restant à un bénéficiaire ; le score compare d'abord le nombre de bénéficiaires, puis l'effort, puis la récompense ; joueurs requis : 10 pour un raid, 5 pour un donjon, 1 pour un succès, un boss du monde (joueurs de la carte) ou un objectif de la Chambre forte. | La spec laisse ces points ouverts ; à régler à l'usage. |
+| 2026-10-25 | Chaque joueur est désigné par un pseudo saisi avec sa clé ; le nom de compte n'est jamais lu ni gardé. | Le minimum de données. |
+| 2026-10-25 | Les dernières suggestions sont gardées dans le navigateur avec leur date, pour les montrer si l'API ne répond pas (E4) ; « Oublier les clés » les efface aussi. | Cas d'erreur E4 et E6. |
+| 2026-10-25 | La page publiée interdit au navigateur toute connexion autre que l'API officielle (politique de sécurité du contenu). | Renforce E5. |
 
 ## Questions encore ouvertes
 
