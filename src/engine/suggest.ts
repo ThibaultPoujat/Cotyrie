@@ -29,20 +29,29 @@ export function compareSuggestions(a: Suggestion, b: Suggestion): number {
   );
 }
 
-// Best suggestions first, but never 3 achievements of the same category.
+// Best suggestions first, varying the types: never 3 activities of the same
+// kind, never 3 achievements of the same category. When the possible
+// activities cannot vary that much, each rule is relaxed in turn (kind first)
+// so that 3 suggestions are still featured.
 function pickFeatured(sorted: Suggestion[]): Suggestion[] {
   const featured: Suggestion[] = [];
-  for (const candidate of sorted) {
-    if (featured.length === FEATURED_COUNT) break;
-    if (candidate.kind === "achievement") {
-      const sameCategory = featured.filter(
-        (s) => s.kind === "achievement" && s.categoryId === candidate.categoryId,
-      ).length;
-      if (sameCategory === FEATURED_COUNT - 1) continue;
+  const limit = FEATURED_COUNT - 1;
+  const sameKind = (c: Suggestion) => featured.filter((s) => s.kind === c.kind).length >= limit;
+  const sameCategory = (c: Suggestion) =>
+    c.kind === "achievement" &&
+    featured.filter((s) => s.kind === "achievement" && s.categoryId === c.categoryId).length >= limit;
+  const passes: ((c: Suggestion) => boolean)[] = [
+    (c) => !sameKind(c) && !sameCategory(c),
+    (c) => !sameCategory(c),
+    () => true,
+  ];
+  for (const allowed of passes) {
+    for (const candidate of sorted) {
+      if (featured.length === FEATURED_COUNT) break;
+      if (!featured.includes(candidate) && allowed(candidate)) featured.push(candidate);
     }
-    featured.push(candidate);
   }
-  return featured;
+  return featured.sort(compareSuggestions);
 }
 
 function collectActivities(input: EngineInput): Suggestion[] {

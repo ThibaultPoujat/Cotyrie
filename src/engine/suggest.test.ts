@@ -155,8 +155,29 @@ describe("S8", () => {
   });
 });
 
-describe("Featured suggestions (spec: choice of the 3 suggestions)", () => {
-  it("never features 3 achievements of the same category", () => {
+describe("S13", () => {
+  it("S13: the 3 featured suggestions are never 3 activities of the same kind while other activities allow varying", () => {
+    const objective = (id: number, current: number) => ({
+      id,
+      title: `Objectif fictif ${id}`,
+      acclaim: 10,
+      current,
+      complete: 10,
+      claimed: false,
+    });
+    // Three Wizard's Vault objectives 1 step away rank first; a world boss is possible.
+    const alice = makePlayer("Alice", { wizardsVaultObjectives: [objective(1, 9), objective(2, 9), objective(3, 9)] });
+    const boss: WorldBossDefinition = { id: "boss", name: "Boss fictif", requiredAccess: [], scheduleUtc: ["12:00"] };
+
+    const result = suggest(makeInput([alice], { worldBosses: [boss] }));
+    expect(result.all.map((s) => s.key).slice(0, 3)).toEqual(["wizardsVault:1", "wizardsVault:2", "wizardsVault:3"]);
+    expect(result.featured.map((s) => s.key)).toEqual(["wizardsVault:1", "wizardsVault:2", "worldBoss:boss"]);
+
+    // With nothing else possible, the 3 best are featured anyway.
+    expect(suggest(makeInput([alice], {})).featured).toHaveLength(3);
+  });
+
+  it("S13: the 3 featured suggestions are never 3 achievements of the same category while other activities allow varying", () => {
     const players = [makePlayer("Alice")];
     const achievements = [
       makeAchievement(1, { categoryId: 9, totalSteps: 1 }),
@@ -165,20 +186,23 @@ describe("Featured suggestions (spec: choice of the 3 suggestions)", () => {
       makeAchievement(4, { categoryId: 8, totalSteps: 4 }),
     ];
 
+    // Only achievements are possible: the kind rule gives way, the category rule holds.
     const result = suggest(makeInput(players, { achievements }));
     expect(result.featured.map((s) => s.key)).toEqual(["achievement:1", "achievement:2", "achievement:4"]);
     expect(result.all).toHaveLength(4);
   });
+});
 
-  it("groups each player's own Wizard's Vault objectives", () => {
+describe("S14", () => {
+  it("S14: a Wizard's Vault objective shared by several present players is one suggestion, benefiting those who have not finished it", () => {
     const objective = { id: 5, title: "Vaincre 10 ennemis fictifs", acclaim: 10, current: 2, complete: 10, claimed: false };
     const alice = makePlayer("Alice", { wizardsVaultObjectives: [objective] });
     const bruno = makePlayer("Bruno", { wizardsVaultObjectives: [{ ...objective, current: 10 }] });
     const chloe = makePlayer("Chloé", { wizardsVaultObjectives: [{ ...objective, current: 7 }] });
 
-    const [vault] = suggest(makeInput([alice, bruno, chloe], {})).all;
-    expect(vault?.key).toBe("wizardsVault:5");
-    expect(vault?.beneficiaries.map((b) => [b.name, b.stepsRemaining])).toEqual([
+    const { all } = suggest(makeInput([alice, bruno, chloe], {}));
+    expect(all.map((s) => s.key)).toEqual(["wizardsVault:5"]);
+    expect(all[0]?.beneficiaries.map((b) => [b.name, b.stepsRemaining])).toEqual([
       ["Alice", 8],
       ["Chloé", 3],
     ]);
