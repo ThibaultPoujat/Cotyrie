@@ -24,6 +24,7 @@ Les décisions déjà prises. On ne les rediscute pas sans raison nouvelle ; une
 | 2026-10-25 | Chaque joueur est désigné par un pseudo saisi avec sa clé ; le nom de compte n'est jamais lu ni gardé. | Le minimum de données. |
 | 2026-10-25 | Les dernières suggestions sont gardées dans le navigateur avec leur date, pour les montrer si l'API ne répond pas (E4) ; « Oublier les clés » les efface aussi. | Cas d'erreur E4 et E6. |
 | 2026-10-25 | La page publiée interdit au navigateur toute connexion autre que l'API officielle (politique de sécurité du contenu). | Renforce E5. |
+| 2026-11-18 | Projet mis en pause : pas de V1, aucun nouveau développement. La V0 reste en ligne et le dépôt est conservé. | V0 jamais utilisée depuis sa mise en ligne (0 usage en trois semaines) ; Thibault joue surtout en duo avec une vétérane, cas où le croisement des progressions apporte peu. L'effort va à un outil réellement utilisé. Reprise seulement sur un besoin ressenti en jeu. |
 
 ## Questions encore ouvertes
 
