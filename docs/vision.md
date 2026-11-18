@@ -42,7 +42,7 @@ Rassembler, décider, avancer ensemble. L'outil voit où en est chacun et trouve
 ## Plan par étapes
 
 1. **Valider les specs de la V0** : fait le 2026-10-22.
-2. **Construire la V0** avec les amis de Thibault, sans serveur ([specs](specs/v0.md)). Fini quand Thibault s'en sert réellement pour choisir quoi faire.
+2. **Construire la V0** avec les amis de Thibault, sans serveur ([specs](specs/v0.md)). Fini quand Thibault s'en sert réellement pour choisir quoi faire. Construite le 2026-10-27, mais jamais utilisée : **projet en pause depuis le 2026-11-18** (voir [décisions](decisions.md)), les étapes suivantes ne sont pas engagées.
 3. **Construire la V1 web** : inscription, sous-jeton renouvelé automatiquement, catalogue tiré du wiki, filtre sur extensions, maîtrises et montures, apprentissage des goûts. Fini quand les suggestions donnent vraiment envie de jouer.
 4. **Faire tester** par quelques joueurs de profils différents, avec revue de sécurité avant toute ouverture au public.
 5. **Élargir** : groupes, mise en relation, bot Discord, hébergement payant.
